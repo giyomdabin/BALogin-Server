@@ -1,7 +1,18 @@
+buildscript {
+	// 24.07.21 기준 최신 버전
+	ext {
+		protobufVersion = '4.27.2'
+		protobufPluginVersion = '0.9.4'
+		grpcVersion = '1.65.1'
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
+
+	id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'cclab'
@@ -23,6 +34,26 @@ repositories {
 	mavenCentral()
 }
 
+protobuf {
+	// Protobuf 컴파일러를 지정하여 .proto 파일을 컴파일합니다.
+	protoc {
+		artifact = "com.google.protobuf:protoc:${protobufVersion}"
+	}
+
+	// gRPC 플러그인을 설정하여 Protobuf 파일로부터 gRPC 관련 코드를 생성합니다.
+	plugins {
+		grpc {
+			artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+		}
+	}
+	// 모든 프로토콜 버퍼 작업에 대해 gRPC 플러그인을 적용합니다.
+	generateProtoTasks {
+		all()*.plugins {
+			grpc {}
+		}
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -32,6 +63,16 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Protobuf & gRPC 의존성
+	implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+	implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+	implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+	implementation "io.grpc:grpc-stub:${grpcVersion}"
+
+	// 기타 의존성
+	compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
 }
 
 tasks.named('test') {

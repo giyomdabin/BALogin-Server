@@ -1,6 +1,6 @@
-package cclab.baloginserver.user.repository;
+package cclab.baloginserver.repository;
 
-import cclab.baloginserver.user.entity.User;
+import cclab.baloginserver.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
