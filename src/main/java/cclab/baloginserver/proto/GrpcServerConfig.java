@@ -26,6 +26,7 @@ public class GrpcServerConfig {
                 .build()
                 .start();
 
+
         System.out.println("gRPC 서버가 50051 포트에서 시작되었습니다.");
 
         // 서버가 종료될 때 안전하게 종료하도록 JVM 종료 후처리 등록

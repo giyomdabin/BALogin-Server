@@ -25,6 +25,8 @@ public class AuthService {
         User user = requestDto.of();
         Optional<User> findUser = userRepository.findByUserId(user.getUserId());
 
+        System.out.println(user);
+
         if(findUser.isPresent()) {
             return null;
         }
@@ -41,17 +43,11 @@ public class AuthService {
 
     // 별도의 비동기 작업으로 라즈베리파이 서버에 UUID 요청 후 저장
     private String requestAndSaveUUID(User user) {
+
         // 라즈베리파이 서버로 UUID 요청
         String uuid = grpcClientService.sendSignupOkSignal();
 
-        // Authentication 테이블에 저장
-//        Auth auth = new Auth();
-//        auth.setUuid(uuid);
-//        auth.getUser().setUserId(user.getUserId());
-
-
         return uuid;
-        //authRepository.save(auth);
     }
 
     // 로그인

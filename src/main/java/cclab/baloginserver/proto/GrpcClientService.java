@@ -11,16 +11,15 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class GrpcClientService {
 
-    @Value("${raspberrypi-server.ip}")
-    private String raspberrypiServerIp;
-
-    @Value("{raspberrypi-server.port}")
-    private int raspberrypiServerPort;
-
     private final ManagedChannel channel;
     private final DeviceServiceGrpc.DeviceServiceBlockingStub stub;
 
-    public GrpcClientService() {
+    public GrpcClientService(@Value("${raspberrypi-server.ip}") String raspberrypiServerIp,
+                             @Value("${raspberrypi-server.port}") int raspberrypiServerPort) {
+
+        System.out.println(raspberrypiServerIp);
+        System.out.println(raspberrypiServerPort);
+
         // 라즈베리파이 서버와 연결하는 채널 설정
         this.channel = ManagedChannelBuilder.forAddress(raspberrypiServerIp, raspberrypiServerPort)
                 .usePlaintext()  // SSL을 사용하지 않으므로 plaintext 사용
@@ -28,7 +27,7 @@ public class GrpcClientService {
 
         // 블로킹 gRPC 스텁 생성, 타임아웃 설정
         this.stub = DeviceServiceGrpc.newBlockingStub(channel)
-                .withDeadlineAfter(200, TimeUnit.SECONDS);  // 타임아웃 5초로 설정
+                .withDeadlineAfter(200, TimeUnit.SECONDS);  // 타임아웃 시간 설정
     }
 
     // 회원가입이 완료되면 "signup ok" 신호를 전송하고, 응답으로 요청한 UUID를 포함한 메시지 확인
