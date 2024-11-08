@@ -41,9 +41,9 @@ public class GrpcServerService extends DeviceServiceGrpc.DeviceServiceImplBase {
 
                 // 3. status에 따라 로그인 또는 로그아웃 메시지 생성
                 if (status == 1) {
-                    message = name + "님이 로그인하였습니다.";
+                    message = name + "님이 로그인하였습니다: " + uuid;
                 } else if (status == 0) {
-                    message = name + "님이 로그아웃하였습니다.";
+                    message = name + "님이 로그아웃하였습니다: " + uuid;
                 } else {
                     message = "알 수 없는 상태입니다. 0 또는 1을 보내주세요.";
                 }
